@@ -41,7 +41,7 @@ var idbApp = (function() {
       // TODO 5.1 - create an 'orders' object store
       case 4:
         console.log('Creating orders store');
-        upgradeDb.createObjectStore('orders');
+        upgradeDb.createObjectStore('orders', {keyPath: 'id'});
 
     }
   });
@@ -210,6 +210,50 @@ var idbApp = (function() {
   function addOrders() {
 
     // TODO 5.2 - add items to the 'orders' object store
+    dbPromise.then(function(db) {
+      var tx = db.transaction('orders', 'readwrite');
+      var store = tx.objectStore('orders');
+      var items = [
+        {
+          name: 'Cabinet',
+          id: 'ca-brn-ma',
+          price: 799.99,
+          color: 'brown',
+          material: 'mahogany',
+          description: 'An intricately-designed, antique cabinet',
+          quantity: 7
+        },
+        {
+          name: 'Armchair',
+          id: 'ac-gr-pin',
+          price: 299.99,
+          color: 'grey',
+          material: 'pine',
+          description: 'A plush recliner armchair',
+          quantity: 3
+        },
+        {
+          name: 'Couch',
+          id: 'cch-blk-ma',
+          price: 499.99,
+          color: 'black',
+          material: 'mahogany',
+          description: 'A very comfy couch',
+          quantity: 3
+        }
+      ];
+
+      return Promise.all(items.map(function(item) {
+        console.log('Adding order: ', item);
+        return store.add(item);
+      })
+      ).catch(function(e) {
+        tx.abort();
+        console.log(e);
+      }).then(function() {
+        console.log('All orders added successfully.');
+      })
+    });
 
   }
 
