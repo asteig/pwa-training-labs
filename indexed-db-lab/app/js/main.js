@@ -324,7 +324,7 @@ var idbApp = (function() {
       item.quantity = qtyRemaining;
       resolve(item);
     });
-    
+
 
   }
 
@@ -332,6 +332,15 @@ var idbApp = (function() {
     dbPromise.then(function(db) {
 
       // TODO 5.7 - update the items in the 'products' object store
+      var tx = db.transaction('products', 'readwrite');
+      var store = tx.objectStore('products');
+      console.log('updateProducts');
+      products.map(function(item) {
+        console.log(item);
+        store.put(item);
+      });
+
+      transaction.complete();
 
     }).then(function() {
       console.log('Orders processed successfully!');
