@@ -272,6 +272,11 @@ var idbApp = (function() {
   function getOrders() {
 
     // TODO 5.4 - get all objects from 'orders' object store
+    return dbPromise.then(function(db) {
+      var tx = db.transaction('orders', 'readonly');
+      var store = tx.objectStore('orders');
+      return store.getAll();
+    });
 
   }
 
