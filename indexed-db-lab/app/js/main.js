@@ -130,6 +130,9 @@ var idbApp = (function() {
       var store = tx.objectStore('products');
       var index = store.index('name');
       return index.get(key);
+    }).then(function(results) {
+      console.log('Results from getByName: ', results);
+      return results;
     });
 
   }
@@ -252,6 +255,7 @@ var idbApp = (function() {
         console.log(e);
       }).then(function() {
         console.log('All orders added successfully.');
+        return;
       })
     });
 
@@ -291,12 +295,36 @@ var idbApp = (function() {
   function processOrders(orders) {
 
     // TODO 5.5 - get items in the 'products' store matching the orders
+    return dbPromise.then(function(db) {
+      var tx = db.transaction('products');
+      var store = tx.objectStore('products');
+      return Promise.all(
+        orders.map(function(order) {
+          return store.get(order.id).then(function(product) {
+            return decrementQuantity(product, order);
+          });
+        })
+      );
+    });
 
   }
 
   function decrementQuantity(product, order) {
 
     // TODO 5.6 - check the quantity of remaining products
+    return new Promise(function(resolve, reject) {
+      var item = product;
+      var qtyRemaining = item.quantity - order.quantity;
+      if (qtyRemaining < 0) {
+        console.log('Not enough ' + product.id + ' left in stock!');
+        document.getElementById('receipt').innerHTML =
+        '<h3>Not enough ' + product.id + ' left in stock!</h3>';
+        throw 'Out of stock!';
+      }
+      item.quantity = qtyRemaining;
+      resolve(item);
+    });
+    
 
   }
 
