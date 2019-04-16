@@ -122,6 +122,12 @@ var idbApp = (function() {
   function getByName(key) {
 
     // TODO 4.3 - use the get method to get an object by name
+    return dbPromise.then(function(db) {
+      var tx = db.transaction('products', 'readonly');
+      var store = tx.objectStore('products');
+      var index = store.index('name');
+      return index.get(key);
+    });
 
   }
 
