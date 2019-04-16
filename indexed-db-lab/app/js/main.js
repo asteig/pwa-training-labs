@@ -18,7 +18,7 @@ var idbApp = (function() {
 
   // TODO 2 - check for support
 
-  var dbPromise = idb.open('couches-n-things', 4, function(upgradeDb) {
+  var dbPromise = idb.open('couches-n-things', 5, function(upgradeDb) {
     switch (upgradeDb.oldVersion) {
       case 0:
         // a placeholder case so that the switch block will 
@@ -39,6 +39,9 @@ var idbApp = (function() {
         store.createIndex('description', 'description');
         store.createIndex('price', 'price');
       // TODO 5.1 - create an 'orders' object store
+      case 4:
+        console.log('Creating orders store');
+        upgradeDb.createObjectStore('orders');
 
     }
   });
