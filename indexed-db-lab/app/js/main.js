@@ -18,7 +18,26 @@ var idbApp = (function() {
 
   // TODO 2 - check for support
 
-  var dbPromise = idb.open('couches-n-things', 1);
+  var dbPromise = idb.open('couches-n-things', 1, function(upgradeDb) {
+  switch (upgradeDb.oldVersion) {
+    case 0:
+      // a placeholder case so that the switch block will 
+      // execute when the database is first created
+      // (oldVersion is 0)
+    case 1:
+      console.log('Creating the products object store');
+      upgradeDb.createObjectStore('products', {keyPath: 'id'});
+
+    case 2:
+    // TODO 4.1 - create 'name' index
+      console.log('Creating \'name\' index...');
+
+    // TODO 4.2 - create 'price' and 'description' indexes
+
+    // TODO 5.1 - create an 'orders' object store
+
+  }
+});
 
   function addProducts() {
 
