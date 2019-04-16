@@ -18,7 +18,7 @@ var idbApp = (function() {
 
   // TODO 2 - check for support
 
-  var dbPromise;
+  var dbPromise = idb.open('couches-n-things', 1);
 
   function addProducts() {
 
