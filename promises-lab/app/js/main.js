@@ -19,6 +19,9 @@ const app = (() => {
 
   function getImageName(country) {
     country = country.toLowerCase();
+
+
+
     const promiseOfImageName = new Promise((resolve, reject) => {
       setTimeout(() => {
         if (country === 'spain' || country === 'chile' || country === 'peru') {
@@ -29,12 +32,23 @@ const app = (() => {
       }, 1000);
     });
     console.log(promiseOfImageName);
-    resolve(promiseOfImageName);    
+    return promiseOfImageName;    
   }
 
   function isSpain(country) {
 
     // Optional - create and return a promise that resolves if input is "Spain"
+    country = country.toLowerCase();
+    const promiseOfSpain = new Promise((resolve, reject) => {
+      if (country === 'spain') {
+        resolve(country + '.png');
+      } else {
+        reject(Error('Didn\'t receive a valid country name!'));
+      }
+    });
+    
+    console.log(promiseOfSpain);
+    return promiseOfSpain;
 
   }
 
