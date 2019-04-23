@@ -11,5 +11,5 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
 	var url = event.request.url;
 	console.log('Fetching:', url);
-	console.log(url.replace(/^.*[\\\/]/, ''))
+	console.log(url.replace(/^.*[\\\/]/, ''));
 });
